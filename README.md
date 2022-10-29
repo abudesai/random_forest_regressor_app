@@ -35,4 +35,4 @@ The data preprocessing step includes:
 - for target variable
   - No transformations are applied to the target
 
-The main programming language is Python. Other tools include Scikit-Learn for main algorithm, feature-engine for preprocessing, FastAPI for web service. The web service provides two endpoints- /ping for health check and /infer for predictions in real time.
+The main programming language is Python. Other tools include Scikit-Learn for main algorithm, feature-engine for preprocessing, FastAPI for web service. The web service provides two endpoints- /ping for health check and /predict for predictions in real time.
