@@ -1,4 +1,4 @@
-Random Forest Regressor using Scikit-Learn on Diamond dataset.
+Random Forest Regressor inference service using Scikit-Learn+FastAPI on Diamond dataset.
 
 - random forest
 - bagging
