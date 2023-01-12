@@ -15,7 +15,6 @@ def validate_v_in_list(var, v, lst):
 
 
 
-
 class DataModel(BaseModel): 
     Id: str
     Carat_Weight: float = Field(alias='Carat Weight', ge=0.75, le=3.0)
@@ -25,9 +24,6 @@ class DataModel(BaseModel):
     Polish: str
     Symmetry: str
     Report: str
-    
-    # class Config:
-    #     allow_population_by_field_name = True
     
     @validator("Cut")
     def Cut_must_be_one_of(cls, v): 

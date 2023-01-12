@@ -22,7 +22,7 @@ def get_inputs_pipeline(pp_params, model_cfg):
     
     pipe_steps = []
         
-    # ===== KEEP ONLY COLUMNS WE USE   =====
+    # ===== Keep only columns we need for prediction   =====
     pipe_steps.append(
         (
             "column_selector",
@@ -36,7 +36,7 @@ def get_inputs_pipeline(pp_params, model_cfg):
     # ===== CATEGORICAL VARIABLES =====
     
     pipe_steps.append(
-        # ===== CAST CAT VARS TO STRING =====
+        # ===== Cast categorical variables to string =====
         (
             "string_type_caster",
             preprocessors.StringTypeCaster(
@@ -45,7 +45,7 @@ def get_inputs_pipeline(pp_params, model_cfg):
         )
     )        
     
-    # impute categorical na with string 'missing'           
+    # impute categorical na with string 'missing'. We use this for features where missing values are frequent.            
     if len(pp_params['cat_na_impute_with_str_missing']):
         pipe_steps.append(
             (
@@ -57,7 +57,7 @@ def get_inputs_pipeline(pp_params, model_cfg):
             )
         )
         
-    # impute categorical na with most frequent category
+    # impute categorical na with most frequent category. We use this for features where missing values are rare.   
     if len(pp_params['cat_na_impute_with_freq']):
         pipe_steps.append(
             (
@@ -70,7 +70,7 @@ def get_inputs_pipeline(pp_params, model_cfg):
         )
         
     if len(pp_params['cat_vars']):
-        # rare-label encoder
+        # rare-label encoder - we group categories that are rare into a combined "rare" category 
         pipe_steps.append(
             (
                 "cat_rare_label_encoder",
@@ -82,7 +82,7 @@ def get_inputs_pipeline(pp_params, model_cfg):
             )
         )
         
-        # one-hot encoder cat vars
+        # one-hot encode cat vars
         pipe_steps.append(
             (
                 'cat_one_hot_encoder',
@@ -92,7 +92,7 @@ def get_inputs_pipeline(pp_params, model_cfg):
             )
         )
         
-        # == DROP UNWANTED FEATURES 
+        # drop the original cat vars because we now have the one-hot encoded features 
         pipe_steps.append(
             (
                 "feature_dropper",
@@ -106,7 +106,7 @@ def get_inputs_pipeline(pp_params, model_cfg):
     # ===== NUMERICAL VARIABLES =====
     if len(pp_params['num_vars']):  
         pipe_steps.append(
-            # ===== CAST CAT VARS TO STRING =====
+            # ===== cast numerical variables to floats (not strictly necessary, but just in case) =====
                 (
                     "float_type_caster",
                     preprocessors.FloatTypeCaster(
@@ -136,8 +136,7 @@ def get_inputs_pipeline(pp_params, model_cfg):
         )    
     
     # Transform numerical variables - standard scale
-    if len(pp_params['num_vars']):   
-        
+    if len(pp_params['num_vars']):           
         # Standard Scale num vars
         pipe_steps.append(
             (

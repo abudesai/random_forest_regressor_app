@@ -1,5 +1,4 @@
 #Import required libraries
-from random import Random
 import numpy as np, pandas as pd
 import joblib
 import sys
@@ -26,12 +25,16 @@ class Regressor():
         
         
     def build_model(self): 
-        model = RandomForestRegressor(n_estimators= self.n_estimators, max_features= self.max_features, 
-                                      max_samples= self.max_samples, random_state=42, 
-                                    #   criterion='squared_error',
-                                      bootstrap= True, 
-                                      oob_score= True, 
-                                      n_jobs=-1, verbose=0)
+        model = RandomForestRegressor(
+            n_estimators= self.n_estimators, 
+            max_features= self.max_features,
+            max_samples= self.max_samples, 
+            random_state=42, 
+            bootstrap= True, 
+            oob_score= True, 
+            n_jobs=-1, 
+            verbose=0
+        )
         return model
     
     
@@ -44,7 +47,7 @@ class Regressor():
             )
     
     
-    def predict(self, X, verbose=False): 
+    def predict(self, X,): 
         preds = self.model.predict(X)
         return preds 
     
@@ -60,7 +63,7 @@ class Regressor():
 
     
     def save(self, model_path): 
-        joblib.dump(self, os.path.join(model_path, model_fname))
+        joblib.dump(self, os.path.join(model_path, model_fname), compress=3)
 
     @classmethod
     def load(cls, model_path): 
@@ -83,4 +86,4 @@ def get_data_based_model_params(data):
         Set any model parameters that are data dependent. 
         For example, number of layers or neurons in a neural network as a function of data shape.
     '''  
-    return {"max_features": max(1, 0.5 *data.shape[1])}
+    return {"max_features": max(1, int(0.5 *data.shape[1]))}

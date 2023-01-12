@@ -35,4 +35,40 @@ The data preprocessing step includes:
 - for target variable
   - No transformations are applied to the target
 
-The main programming language is Python. Other tools include Scikit-Learn for main algorithm, feature-engine for preprocessing, FastAPI for web service. The web service provides two endpoints- /ping for health check and /predict for predictions in real time.
+The main programming language is Python. Other tools include Scikit-Learn for main algorithm, feature-engine for preprocessing, FastAPI for web service. The web service listens on port 80 and offers two endpoints:
+
+- `/ping`: This is a GET request. It should return a 200 status code when the service is healthy.
+- `/predict`: This is a POST request. You should send a JSON formatted data with the feature names and values to be used as the sample for predict. Sample JSON data to send for inference looks as follows:
+
+```
+{
+  "Id": "Fair",
+  "Carat Weight": 2.0,
+  "Cut": "Good",
+  "Color": "D",
+  "Clarity": "FL",
+  "Polish": "G",
+  "Symmetry": "ID",
+  "Report": "GIA"
+}
+```
+
+Note that the request data should include the sample id (key "Id" in the exhibit above). The service will return the prediction - in this case, the predicted diamond value. Response data will look as follows:
+
+```
+{
+  "data": {
+    "Id": "Fair",
+    "Carat Weight": 2,
+    "Cut": "Good",
+    "Color": "D",
+    "Clarity": "FL",
+    "Polish": "G",
+    "Symmetry": "ID",
+    "Report": "GIA"
+  },
+  "prediction": 49835.4973
+}
+```
+
+The FastAPI app also validates the data sent for prediction. The input fields must meet certain schema. Check the data_model.py file.
