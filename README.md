@@ -29,7 +29,7 @@ The data preprocessing step includes:
 
   - Add binary column to represent 'missing' flag for missing values
   - Impute missing values with mean of non-missing
-  - Standard scale data after yeo-johnson
+  - Standard scale data
   - Clip values to +/- 4.0 (to remove outliers)
 
 - for target variable
